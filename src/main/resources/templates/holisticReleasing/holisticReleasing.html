@@ -85,6 +85,25 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
+        // 페이지가 로드될 때 실행되는 함수
+        window.onload = function() {
+            fetch('/api/reload')
+            .then(response => response.json())
+            .then(data => {
+                if (data.subject) {
+                    document.getElementById('subject').value = data.subject;
+                }
+                if (data.question) {
+                    document.getElementById('question').textContent = data.question;
+                }
+                if (data.count) {
+                    document.getElementById('count').textContent = data.count;
+                }
+                // 필요한 다른 로직 추가
+            })
+            .catch(error => console.error('Error:', error));
+        };
     </script>
 </main>
 
