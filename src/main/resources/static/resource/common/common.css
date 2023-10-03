@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Dovemayo_gothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html > body {
+    font-family: "Dovemayo_gothic";
+    text-underline-position: under;
+    word-break: keep-all;
+    background-color: #2b2b2b;
+    color: white;
+}
+
+html > body .label-text {
+    font-size: 1rem;
+}
