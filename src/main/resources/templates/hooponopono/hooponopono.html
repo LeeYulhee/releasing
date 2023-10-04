@@ -1,0 +1,94 @@
+<html layout:decorate="~{common/layout.html}">
+
+<head>
+    <title>Holistic Releasing</title>
+
+    <style>
+
+        .answer {
+            background-color: #18181b !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .answer:hover {
+            background-color: black !important;
+        }
+
+        input:focus {
+            outline: none !important;
+        }
+
+        .start:hover {
+            background-color: #7f8080 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main layout:fragment="main" class="flex-grow flex items-center justify-center">
+
+        <button class="btn w-1/3 answer" onclick="start()">
+            시작하기
+        </button>
+
+        <button id="word" class="btn w-1/3 answer" onclick="next()">
+        </button>
+
+        <div class="flex justify-center text-lg">
+            <p>카운트 : &nbsp</p>
+            <p id="count">0</p>
+        </div>
+
+        <script>
+            function start() {
+                fetch(`/hooponopono/start`, {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('word').textContent = data.word;
+                    document.getElementById('count').textContent = data.count;
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            function next() {
+                fetch('/hooponopono/next', {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 질문과 count를 업데이트
+                    document.getElementById('word').textContent = data.word;
+                    document.getElementById('count').textContent = data.count;
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // // 페이지가 로드될 때 실행되는 함수
+            // window.onload = function() {
+            //     fetch('/api/reload')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         if (data.subject) {
+            //             document.getElementById('subject').value = data.subject;
+            //         }
+            //         if (data.question) {
+            //             document.getElementById('question').textContent = data.question;
+            //         }
+            //         if (data.count) {
+            //             document.getElementById('count').textContent = data.count;
+            //         }
+            //         // 필요한 다른 로직 추가
+            //     })
+            //     .catch(error => console.error('Error:', error));
+            // };
+        </script>
+
+    </main>
+
+</body>
+
+</html>
