@@ -10,17 +10,17 @@ import java.util.Map;
 @RestController
 public class HooponoponoApiController {
 
-    private final String[] hooponoponoWords = {"사랑합니다", "감사합니다", "미안합니다", "용서하세요"};
+    private final String[] hoopoWords = {"사랑합니다", "감사합니다", "미안합니다", "용서하세요"};
 
     @GetMapping("/hooponopono/start")
     public Map<String, Object> startHooponopono(HttpSession session) {
 
-        session.setAttribute("count", 0);
-        session.setAttribute("mode", 0);
+        session.setAttribute("hoopoCount", 0);
+        session.setAttribute("hoopoMode", 0);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("word", hooponoponoWords[0]);
-        response.put("count", 0);
+        response.put("hoopoWord", hoopoWords[0]);
+        response.put("hoopoCount", 0);
 
         return response;
     }
@@ -28,30 +28,39 @@ public class HooponoponoApiController {
     @GetMapping("/hooponopono/next")
     public Map<String, Object> nextHooponopono(HttpSession session) {
 
-        int mode = (int) session.getAttribute("mode");
-        int count = (int) session.getAttribute("count");
-
-//        if(mode == 3) {
-//            mode = 0;
-//            session.setAttribute("count", ++count);
-//            session.setAttribute("mode", mode);
-//        } else {
-//            session.setAttribute("mode", ++mode);
-//        }
-        if (mode < 3) {
-            mode++;
+        int hoopoMode = (int) session.getAttribute("hoopoMode");
+        int hoopoCount = (int) session.getAttribute("hoopoCount");
+        
+        if (hoopoMode < 3) {
+            hoopoMode++;
         } else {
-            mode = 0;
-            count++;
+            hoopoMode = 0;
+            hoopoCount++;
         }
 
-        session.setAttribute("mode", mode);
-        session.setAttribute("count", count);
+        session.setAttribute("hoopoMode", hoopoMode);
+        session.setAttribute("hoopoCount", hoopoCount);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("word", hooponoponoWords[mode]);
-        response.put("count", count);
+        response.put("hoopoWord", hoopoWords[hoopoMode]);
+        response.put("hoopoCount", hoopoCount);
 
         return response;
+    }
+
+    @GetMapping("/hooponopono/init")
+    public Map<String, Object> initOrContinue(HttpSession session) {
+        Integer hoopoMode = (Integer) session.getAttribute("hoopoMode");
+        Integer hoopoCount = (Integer) session.getAttribute("hoopoCount");
+
+        if(hoopoMode == null || hoopoCount == null) {
+            return startHooponopono(session);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("hoopoWord", hoopoWords[hoopoMode]);
+            response.put("hoopoCount", hoopoCount);
+
+            return response;
+        }
     }
 }
