@@ -1,0 +1,22 @@
+.menu > li:hover {
+  background-color: #18181b !important;
+  border-radius: 8px;
+}
+.menu > li:hover > a {
+  color: white !important;
+}
+.menu > li:active {
+  background-color: #18181b !important;
+  color: white !important;
+}
+.menu > li:active a {
+  background-color: #18181b !important;
+  color: white !important;
+}
+.menu > li > a:visited {
+  color: white !important;
+}
+
+.btn-ghost:hover {
+  background: none !important;
+}
