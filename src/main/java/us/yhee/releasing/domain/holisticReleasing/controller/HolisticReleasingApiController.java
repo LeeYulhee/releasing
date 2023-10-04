@@ -15,18 +15,18 @@ import java.util.Map;
 public class HolisticReleasingApiController {
 
     @GetMapping("/api/start")
-    public Map<String, Object> start(HttpSession session, @RequestParam String subject) {
+    public Map<String, Object> start(HttpSession session, @RequestParam String holisticSubject) {
 
-        String question = String.format("나는 최대한 %s을 환영하도록 나를 허용할 수 있나요?", subject);
+        String holisticQuestion = String.format("나는 최대한 %s을 환영하도록 나를 허용할 수 있나요?", holisticSubject);
 
-        session.setAttribute("subject", subject);
-        session.setAttribute("count", 0);
-        session.setAttribute("mode", "resist");
-        session.setAttribute("question", question);
+        session.setAttribute("holisticSubject", holisticSubject);
+        session.setAttribute("holisticCount", 0);
+        session.setAttribute("holisticMode", "resist");
+        session.setAttribute("holisticQuestion", holisticQuestion);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("question", question);
-        response.put("count", 0);
+        response.put("holisticQuestion", holisticQuestion);
+        response.put("holisticCount", 0);
 
         return response;
     }
@@ -34,26 +34,26 @@ public class HolisticReleasingApiController {
     @GetMapping("/api/next")
     public Map<String, Object> next(HttpSession session) {
 
-        String mode = (String) session.getAttribute("mode");
-        String subject = (String) session.getAttribute("subject");
-        int count = (int) session.getAttribute("count");
+        String holisticMode = (String) session.getAttribute("holisticMode");
+        String holisticSubject = (String) session.getAttribute("holisticSubject");
+        int holisticCount = (int) session.getAttribute("holisticCount");
 
-        String question;
+        String holisticQuestion;
 
-        if(mode.equals("welcome")) {
-            question = String.format("나는 최대한 %s을 환영하도록 나를 허용할 수 있나요?", subject);
-            session.setAttribute("count", ++count);
-            session.setAttribute("mode", "resist");
+        if(holisticMode.equals("welcome")) {
+            holisticQuestion = String.format("나는 최대한 %s을 환영하도록 나를 허용할 수 있나요?", holisticSubject);
+            session.setAttribute("holisticCount", ++holisticCount);
+            session.setAttribute("holisticMode", "resist");
         } else {
-            question = String.format("나는 최대한 %s에 저항하도록 나를 허용할 수 있나요?", subject);
-            session.setAttribute("mode", "welcome");
+            holisticQuestion = String.format("나는 최대한 %s에 저항하도록 나를 허용할 수 있나요?", holisticSubject);
+            session.setAttribute("holisticMode", "welcome");
         }
 
-        session.setAttribute("question", question);
+        session.setAttribute("holisticQuestion", holisticQuestion);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("question", question);
-        response.put("count", count);
+        response.put("holisticQuestion", holisticQuestion);
+        response.put("holisticCount", holisticCount);
 
         return response;
     }
@@ -61,9 +61,9 @@ public class HolisticReleasingApiController {
     @GetMapping("/api/reload")
     public ResponseEntity<Map<String, Object>> reload(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
-        response.put("subject", session.getAttribute("subject"));
-        response.put("question", session.getAttribute("question"));
-        response.put("count", session.getAttribute("count"));
+        response.put("holisticSubject", session.getAttribute("holisticSubject"));
+        response.put("holisticQuestion", session.getAttribute("holisticQuestion"));
+        response.put("holisticCount", session.getAttribute("holisticCount"));
 
         return ResponseEntity.ok(response);
     }
