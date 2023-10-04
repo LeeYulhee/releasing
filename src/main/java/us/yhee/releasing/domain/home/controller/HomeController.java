@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/")
+    public String start() {
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
     public String home() {
-        return "redirect:/releasing/holistic";
+        return "home/home";
     }
 }
