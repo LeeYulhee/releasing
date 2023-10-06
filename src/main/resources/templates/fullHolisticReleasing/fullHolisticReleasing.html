@@ -1,7 +1,7 @@
 <html layout:decorate="~{common/layout.html}">
 
 <head>
-    <title>MASURIN🔮 | Holistic Releasing</title>
+    <title>MASURIN🔮 | Full Holistic Releasing</title>
 
     <style>
 
@@ -23,7 +23,7 @@
             background-color: #7f8080 !important;
         }
 
-        #holisticQuestion {
+        #fullHolisticQuestion {
             word-wrap: break-word;
             overflow-wrap: break-word;
             word-break: break-all;
@@ -40,14 +40,14 @@
             <div class="flex flex-col gap-6">
 
                 <div class="input-group input-group-lg flex justify-center">
-                    <input class="input input-bordered w-4/6 text-black input-lg" id="holisticSubject" placeholder="주제를 입력하세요"
+                    <input class="input input-bordered w-4/6 text-black input-lg" id="fullHolisticSubject" placeholder="주제를 입력하세요"
                            style="background-color: #cccccc;" type="text"/>
                     <button class="btn btn-lg w-1/5 start" onclick="start()" style="background-color: #b2b3b3; border: none;">
                         시작
                     </button>
                 </div>
 
-                <p class="text-center text-2xl mt-10 mb-10" id="holisticQuestion"></p>
+                <p class="text-center text-2xl mt-10 mb-10" id="fullHolisticQuestion"></p>
 
                 <div class="flex justify-center gap-8">
                     <button class="btn w-2/5 answer btn-lg" onclick="next()">
@@ -60,7 +60,7 @@
 
                 <div class="flex justify-center text-lg">
                     <p>카운트 : &nbsp</p>
-                    <p id="holisticCount">0</p>
+                    <p id="fullHolisticCount">0</p>
                 </div>
 
             </div>
@@ -69,44 +69,43 @@
 
     <script>
         function start() {
-            const holisticSubject = document.getElementById('holisticSubject').value;
-            fetch(`/holistic/start?holisticSubject=${holisticSubject}`, {
+            const fullHolisticSubject = document.getElementById('fullHolisticSubject').value;
+            fetch(`/fullholistic/start?fullHolisticSubject=${fullHolisticSubject}`, {
                 method: 'GET'
             })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('holisticQuestion').textContent = data.holisticQuestion;
-                    document.getElementById('holisticCount').textContent = data.holisticCount; // 초기 holisticCount 값도 설정
+                    document.getElementById('fullHolisticQuestion').textContent = data.fullHolisticQuestion;
+                    document.getElementById('fullHolisticCount').textContent = data.fullHolisticCount;
                 })
                 .catch(error => console.error('Error:', error));
         }
 
         function next() {
-            fetch('/holistic/next', {
+            fetch('/fullholistic/next', {
                 method: 'GET'
             })
                 .then(response => response.json())
                 .then(data => {
-                    // 질문과 holisticCount를 업데이트
-                    document.getElementById('holisticQuestion').textContent = data.holisticQuestion;
-                    document.getElementById('holisticCount').textContent = data.holisticCount; // resist 모드에서만 증가된 holisticCount 값을 받아옴
+                    document.getElementById('fullHolisticQuestion').textContent = data.fullHolisticQuestion;
+                    document.getElementById('fullHolisticCount').textContent = data.fullHolisticCount;
                 })
                 .catch(error => console.error('Error:', error));
         }
 
         // 페이지가 로드될 때 실행되는 함수
         window.onload = function () {
-            fetch('/holistic/reload')
+            fetch('/fullholistic/reload')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.holisticSubject) {
-                        document.getElementById('holisticSubject').value = data.holisticSubject;
+                    if (data.fullHolisticSubject) {
+                        document.getElementById('fullHolisticSubject').value = data.fullHolisticSubject;
                     }
-                    if (data.holisticQuestion) {
-                        document.getElementById('holisticQuestion').textContent = data.holisticQuestion;
+                    if (data.fullHolisticQuestion) {
+                        document.getElementById('fullHolisticQuestion').textContent = data.fullHolisticQuestion;
                     }
-                    if (data.holisticCount) {
-                        document.getElementById('holisticCount').textContent = data.holisticCount;
+                    if (data.fullHolisticCount) {
+                        document.getElementById('fullHolisticCount').textContent = data.fullHolisticCount;
                     }
                     // 필요한 다른 로직 추가
                 })
