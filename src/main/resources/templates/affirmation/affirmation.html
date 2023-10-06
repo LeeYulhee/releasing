@@ -34,9 +34,11 @@
             <div class="flex flex-col gap-6">
 
                 <div class="input-group input-group-lg flex justify-center">
-                    <input class="input input-bordered w-3/5 text-black input-lg" id="setAffirmationSubject" placeholder="주제를 입력하세요"
+                    <input class="input input-bordered w-3/5 text-black input-lg" id="setAffirmationSubject"
+                           placeholder="확언을 입력하세요"
                            style="background-color: #cccccc;" type="text"/>
-                    <button class="btn btn-lg w-1/5 start" onclick="start()" style="background-color: #b2b3b3; border: none;">
+                    <button class="btn btn-lg w-1/5 start" onclick="start()"
+                            style="background-color: #b2b3b3; border: none;">
                         시작
                     </button>
                 </div>
@@ -45,7 +47,7 @@
                     <button class="btn btn-lg w-4/5 answer" id="affirmationSubject" onclick="next()"></button>
                 </div>
 
-                <div class="flex justify-center text-lg">
+                <div class="flex justify-center text-lg gap-10">
                     <div class="flex">
                         <p>카운트 : &nbsp</p>
                         <p id="affirmationCount">0</p>
@@ -82,21 +84,21 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        // 페이지가 로드될 때 실행되는 함수
-        // window.onload = function () {
-        //     fetch('/affirmation/reload')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (data.affirmationSubject) {
-        //                 document.getElementById('affirmationSubject').value = data.affirmationSubject;
-        //             }
-        //             if (data.affirmationCount) {
-        //                 document.getElementById('affirmationCount').textContent = data.affirmationCount;
-        //             }
-        //             // 필요한 다른 로직 추가
-        //         })
-        //         .catch(error => console.error('Error:', error));
-        // };
+        window.onload = function () {
+            fetch('/affirmation/reload')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.affirmationSubject) {
+                        document.getElementById('affirmationSubject').textContent = data.affirmationSubject;
+                        document.getElementById('setAffirmationSubject').value = data.affirmationSubject;
+                    }
+                    if (data.affirmationCount) {
+                        document.getElementById('affirmationCount').textContent = data.affirmationCount;
+                    }
+                    // 필요한 다른 로직 추가
+                })
+                .catch(error => console.error('Error:', error));
+        };
     </script>
 </main>
 

@@ -29,7 +29,7 @@ public class AffirmationApiController {
         String affirmationSubject = (String) session.getAttribute("affirmationSubject");
         Integer affirmationCount = (Integer) session.getAttribute("affirmationCount");
 
-        if(affirmationSubject == null || affirmationCount == null) {
+        if(affirmationSubject == null || affirmationCount == null || affirmationSubject.equals("")) {
             return startAffirmation(session, null);
         }
 
