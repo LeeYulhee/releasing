@@ -1,0 +1,105 @@
+<html layout:decorate="~{common/layout.html}">
+
+<head>
+    <title>MASURIN🔮 | Affirmation</title>
+
+    <style>
+
+        .answer {
+            background-color: #18181b !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .answer:hover {
+            background-color: black !important;
+        }
+
+        input:focus {
+            outline: none !important;
+        }
+
+        .start:hover {
+            background-color: #7f8080 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="flex-grow flex items-center justify-center" layout:fragment="main">
+
+    <div class="flex-grow flex items-center justify-center" id="app">
+        <div class="max-w-2xl w-full px-4">
+            <div class="flex flex-col gap-6">
+
+                <div class="input-group input-group-lg flex justify-center">
+                    <input class="input input-bordered w-3/5 text-black input-lg" id="setAffirmationSubject" placeholder="주제를 입력하세요"
+                           style="background-color: #cccccc;" type="text"/>
+                    <button class="btn btn-lg w-1/5 start" onclick="start()" style="background-color: #b2b3b3; border: none;">
+                        시작
+                    </button>
+                </div>
+
+                <div class="flex justify-center mt-10">
+                    <button class="btn btn-lg w-4/5 answer" id="affirmationSubject" onclick="next()"></button>
+                </div>
+
+                <div class="flex justify-center text-lg">
+                    <div class="flex">
+                        <p>카운트 : &nbsp</p>
+                        <p id="affirmationCount">0</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function start() {
+            const affirmationSubject = document.getElementById('setAffirmationSubject').value;
+            fetch(`/affirmation/start?affirmationSubject=${affirmationSubject}`, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('affirmationSubject').textContent = data.affirmationSubject;
+                    document.getElementById('affirmationCount').textContent = data.affirmationCount;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function next() {
+            fetch('/affirmation/next', {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('affirmationSubject').textContent = data.affirmationSubject;
+                    document.getElementById('affirmationCount').textContent = data.affirmationCount;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // 페이지가 로드될 때 실행되는 함수
+        // window.onload = function () {
+        //     fetch('/affirmation/reload')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.affirmationSubject) {
+        //                 document.getElementById('affirmationSubject').value = data.affirmationSubject;
+        //             }
+        //             if (data.affirmationCount) {
+        //                 document.getElementById('affirmationCount').textContent = data.affirmationCount;
+        //             }
+        //             // 필요한 다른 로직 추가
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // };
+    </script>
+</main>
+
+</body>
+
+</html>

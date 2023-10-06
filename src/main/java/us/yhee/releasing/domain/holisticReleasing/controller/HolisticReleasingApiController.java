@@ -14,8 +14,8 @@ import java.util.Map;
 @Slf4j
 public class HolisticReleasingApiController {
 
-    @GetMapping("/api/start")
-    public Map<String, Object> start(HttpSession session, @RequestParam String holisticSubject) {
+    @GetMapping("/holistic/start")
+    public Map<String, Object> startHolistic(HttpSession session, @RequestParam String holisticSubject) {
 
         String holisticQuestion = String.format("나는 최대한 %s을 환영하도록 나를 허용할 수 있나요?", holisticSubject);
 
@@ -31,8 +31,8 @@ public class HolisticReleasingApiController {
         return response;
     }
 
-    @GetMapping("/api/next")
-    public Map<String, Object> next(HttpSession session) {
+    @GetMapping("/holistic/next")
+    public Map<String, Object> nextHolistic(HttpSession session) {
 
         String holisticMode = (String) session.getAttribute("holisticMode");
         String holisticSubject = (String) session.getAttribute("holisticSubject");
@@ -58,8 +58,8 @@ public class HolisticReleasingApiController {
         return response;
     }
 
-    @GetMapping("/api/reload")
-    public ResponseEntity<Map<String, Object>> reload(HttpSession session) {
+    @GetMapping("/holistic/reload")
+    public ResponseEntity<Map<String, Object>> reloadHolistic(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         response.put("holisticSubject", session.getAttribute("holisticSubject"));
         response.put("holisticQuestion", session.getAttribute("holisticQuestion"));
