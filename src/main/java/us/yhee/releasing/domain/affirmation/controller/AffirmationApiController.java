@@ -1,31 +1,30 @@
 package us.yhee.releasing.domain.affirmation.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
+import us.yhee.releasing.domain.affirmation.dto.AffirmationDTO;
+import us.yhee.releasing.domain.affirmation.service.AffirmationService;
 
 @RestController
+@RequiredArgsConstructor
 public class AffirmationApiController {
 
+    private final AffirmationService affirmationService;
+
     @GetMapping("/affirmation/start")
-    public Map<String, Object> startAffirmation(HttpSession session, @RequestParam String affirmationSubject) {
+    public AffirmationDTO startAffirmation(HttpSession session, @RequestParam String affirmationSubject) {
         session.setAttribute("affirmationSubject", affirmationSubject);
         session.setAttribute("affirmationCount", 0);
 
-        Map<String, Object> reponse = new HashMap<>();
-        reponse.put("affirmationSubject", affirmationSubject);
-        reponse.put("affirmationCount", 0);
-
-        return reponse;
+        return affirmationService.startAffirmationResponse(affirmationSubject);
     }
 
     @GetMapping("/affirmation/next")
-    public Map<String, Object> nextAffirmation(HttpSession session) {
+    public AffirmationDTO nextAffirmation(HttpSession session) {
         String affirmationSubject = (String) session.getAttribute("affirmationSubject");
         Integer affirmationCount = (Integer) session.getAttribute("affirmationCount");
 
@@ -33,23 +32,17 @@ public class AffirmationApiController {
             return startAffirmation(session, null);
         }
 
-        affirmationCount++;
+        AffirmationDTO reponse = affirmationService.updatedCount(affirmationSubject, affirmationCount);
 
-        session.setAttribute("affirmationSubject", affirmationSubject);
-        session.setAttribute("affirmationCount", affirmationCount);
-
-        Map<String, Object> reponse = new HashMap<>();
-        reponse.put("affirmationSubject", affirmationSubject);
-        reponse.put("affirmationCount", affirmationCount);
+        session.setAttribute("affirmationSubject", reponse.getAffirmationSubject());
+        session.setAttribute("affirmationCount", reponse.getAffirmationCount());
 
         return reponse;
     }
 
     @GetMapping("/affirmation/reload")
-    public ResponseEntity<Map<String, Object>> reloadAffirmation(HttpSession session) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("affirmationSubject", session.getAttribute("affirmationSubject"));
-        response.put("affirmationCount", session.getAttribute("affirmationCount"));
+    public ResponseEntity<AffirmationDTO> reloadAffirmation(HttpSession session) {
+        AffirmationDTO response = new AffirmationDTO((String)session.getAttribute("affirmationSubject"), (int)session.getAttribute("affirmationCount"));
 
         return ResponseEntity.ok(response);
     }
