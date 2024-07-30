@@ -1,4 +1,4 @@
-package us.yhee.releasing.domain.fullHolisticReleasing;
+package us.yhee.releasing.domain.fullHolisticReleasing.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

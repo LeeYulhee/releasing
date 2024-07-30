@@ -1,16 +1,22 @@
-package us.yhee.releasing.domain.fullHolisticReleasing;
+package us.yhee.releasing.domain.fullHolisticReleasing.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import us.yhee.releasing.domain.fullHolisticReleasing.dto.FullHolisticReleasingDTO;
+import us.yhee.releasing.domain.fullHolisticReleasing.service.FullHolisticReleasingService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class FullHolisticApiController {
+
+    private final FullHolisticReleasingService fullHolisticReleasingService;
 
     private final String[] fullHoliList = {"나는 최대한 %s에 저항하도록 나를 허용할 수 있는가?", "나는 최대한 %s을 환영하도록 나를 허용할 수 있는가?",
                                             "나는 최대한 %s을 거절하도록 나를 허용할 수 있는가?", "나는 최대한 %s를 수용하도록 나를 허용할 수 있는가?",
@@ -20,7 +26,7 @@ public class FullHolisticApiController {
                                             "나는 최대한 %s에 마음을 열도록 나를 허용할 수 있는가?", "나는 최대한 %s에 마음을 닫도록 나를 허용할 수 있는가?"};
 
     @GetMapping("/fullholistic/start")
-    public Map<String, Object> startFullHolistic(HttpSession session, @RequestParam String fullHolisticSubject) {
+    public FullHolisticReleasingDTO startFullHolistic(HttpSession session, @RequestParam String fullHolisticSubject) {
 
         String fullHolisticQuestion = String.format(fullHoliList[0], fullHolisticSubject);
 
@@ -29,11 +35,7 @@ public class FullHolisticApiController {
         session.setAttribute("fullHolisticMode", 0);
         session.setAttribute("fullHolisticQuestion", fullHolisticQuestion);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("fullHolisticQuestion", fullHolisticQuestion);
-        response.put("fullHolisticCount", 0);
-
-        return response;
+        return fullHolisticReleasingService.startFullHolisticResponse(fullHolisticQuestion);
     }
 
     @GetMapping("/fullholistic/next")
